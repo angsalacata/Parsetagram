@@ -65,7 +65,7 @@ public class ParsetagramActivity extends AppCompatActivity {
           public void done(ParseUser user, ParseException e) {
             if (user != null) {
               Log.d(TAG, "Login successful");
-              Intent intent = new Intent(ParsetagramActivity.this, HomeActivity.class);
+              Intent intent = new Intent(ParsetagramActivity.this, HomeTimelineActivity.class);
               startActivity(intent);
               finish();
 

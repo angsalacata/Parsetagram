@@ -48,7 +48,7 @@ public class CreateAccountActivity extends AppCompatActivity {
           @Override
           public void done(ParseException e) {
             if (e == null) {
-              Intent intent = new Intent(CreateAccountActivity.this, HomeActivity.class);
+              Intent intent = new Intent(CreateAccountActivity.this, HomeTimelineActivity.class);
               startActivity(intent);
             } else {
               e.printStackTrace();

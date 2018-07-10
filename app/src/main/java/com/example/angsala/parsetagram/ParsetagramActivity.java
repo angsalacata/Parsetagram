@@ -1,5 +1,6 @@
 package com.example.angsala.parsetagram;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -45,7 +46,10 @@ public class ParsetagramActivity extends AppCompatActivity {
             public void done(ParseUser user, ParseException e) {
                 if (user != null){
                     Log.d(TAG, "Login successful");
-                    //TODO- have a valid user
+                     Intent intent = new Intent(ParsetagramActivity.this, HomeActivity.class);
+                     startActivity(intent);
+                     finish();
+
                 } else{
                     Log.e(TAG, "Failed to login");
                     e.printStackTrace();

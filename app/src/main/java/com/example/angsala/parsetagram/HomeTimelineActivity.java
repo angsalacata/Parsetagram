@@ -2,10 +2,12 @@ package com.example.angsala.parsetagram;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -23,6 +25,7 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 public class HomeTimelineActivity extends AppCompatActivity {
@@ -39,7 +42,7 @@ public class HomeTimelineActivity extends AppCompatActivity {
     public final String APP_TAG = "MyParsetagram";
     public String photoFilename = "photo.jpg";
     File photofile;
-
+    String mCurrentPhotoPath;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,9 +73,16 @@ public class HomeTimelineActivity extends AppCompatActivity {
                         final String description = inputDescription.getText().toString();
                         final ParseUser currentUser = ParseUser.getCurrentUser();
 
-                        final File file = new File(imagePath);
-                        final ParseFile picture = new ParseFile(photofile);
-                        createPosts(description, picture, currentUser);
+                        final File file = getPhotoFileUri(photoFilename);
+                        final ParseFile picture = new ParseFile(file);
+                        //this ParseFile has to be saved
+                        picture.saveInBackground(new SaveCallback() {
+                            @Override
+                            public void done(ParseException e) {
+                                createPosts(description, picture, currentUser);
+                            }
+                        });
+
                     }
                 });
 
@@ -147,14 +157,23 @@ public class HomeTimelineActivity extends AppCompatActivity {
 
     private void dispatchTakePictureIntent(){
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-      //  photofile = getPhotoFileUri(photoFilename);
-
-        //Uri fileProvider = FileProvider.getUriForFile(HomeTimelineActivity.this, "com.codepath.fileprovider", photofile);
-      //  takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider);
         if (takePictureIntent.resolveActivity(getPackageManager())!=null){
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-        }
+            File photoFile = null;
+            try{
+                photoFile = createImageFile();}
+            catch(IOException e){
+                e.printStackTrace();
+            }
+            if(photoFile != null){
+                mCurrentPhotoPath = photoFile.getAbsolutePath();
+                Uri photoURI = FileProvider.getUriForFile(HomeTimelineActivity.this,"com.codepath.fileprovider", photoFile);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+            }
 
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+
+        }
     }
 
     private File getPhotoFileUri(String photoFilename) {
@@ -166,16 +185,27 @@ public class HomeTimelineActivity extends AppCompatActivity {
         return file;
     }
 
+    //use this to trigger that the file was loaded
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK){
-            Bundle extras = data.getExtras();
+            Log.d(TAG, "successfully saved photo");
+            //this will still load the pic into an imageview
+         Bundle extras = data.getExtras();
             testImage = (ImageView) findViewById(R.id.imvTestGettingCamera);
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            testImage.setImageBitmap(imageBitmap);
+       Bitmap imageBitmap = (Bitmap) extras.get("data");
+         testImage.setImageBitmap(imageBitmap);
         }
 
+    }
+
+    private File createImageFile() throws IOException{
+        String timeStamp = "7/10";
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(timeStamp, imageFileName, storageDir);
+        return image;
     }
 
 

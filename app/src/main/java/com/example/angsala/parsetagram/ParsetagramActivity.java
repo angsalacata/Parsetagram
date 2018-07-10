@@ -32,6 +32,9 @@ public class ParsetagramActivity extends AppCompatActivity {
     loginButton = (Button) findViewById(R.id.loginButton);
     createAccount = (TextView) findViewById(R.id.txtvCreateAccount);
 
+    getSupportActionBar().hide();
+
+
     loginButton.setOnClickListener(
         new View.OnClickListener() {
           @Override

@@ -1,14 +1,18 @@
 package com.example.angsala.parsetagram;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.example.angsala.parsetagram.models.Post;
 import com.parse.FindCallback;
@@ -28,6 +32,13 @@ public class HomeTimelineActivity extends AppCompatActivity {
     private EditText inputDescription;
     private Button buttonRefresh;
     private Button buttonCreate;
+    private ImageView testImage;
+    public final static int PICK_PHOTO_CODE = 1046;
+    static final int REQUEST_IMAGE_CAPTURE = 1;
+    //this is from the codepath, capture intent article
+    public final String APP_TAG = "MyParsetagram";
+    public String photoFilename = "photo.jpg";
+    File photofile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +52,7 @@ public class HomeTimelineActivity extends AppCompatActivity {
         inputDescription = (EditText) findViewById(R.id.inputDescription);
         buttonRefresh = (Button) findViewById(R.id.buttonRefresh);
         buttonCreate = (Button) findViewById(R.id.buttonCreate);
+
 
         buttonRefresh.setOnClickListener(
                 new View.OnClickListener() {
@@ -59,24 +71,20 @@ public class HomeTimelineActivity extends AppCompatActivity {
                         final ParseUser currentUser = ParseUser.getCurrentUser();
 
                         final File file = new File(imagePath);
-                        final ParseFile picture = new ParseFile(file);
+                        final ParseFile picture = new ParseFile(photofile);
                         createPosts(description, picture, currentUser);
                     }
                 });
 
         loadTopPosts();
 
-
-
-
-
+        //button to take pictures, it is a floating action button
         FloatingActionButton camera = (FloatingActionButton) findViewById(R.id.fab);
         camera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
+                dispatchTakePictureIntent();
+                }
         });
     }
 
@@ -127,6 +135,49 @@ public class HomeTimelineActivity extends AppCompatActivity {
                     }
                 });
     }
+
+
+//TODO- how to pick a photo from the emulator
+ /*   public void onPickPhoto(View view){
+        //Create intent for picking a photo from the gallery
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
+    }*/
+
+
+    private void dispatchTakePictureIntent(){
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+      //  photofile = getPhotoFileUri(photoFilename);
+
+        //Uri fileProvider = FileProvider.getUriForFile(HomeTimelineActivity.this, "com.codepath.fileprovider", photofile);
+      //  takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider);
+        if (takePictureIntent.resolveActivity(getPackageManager())!=null){
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
+
+    }
+
+    private File getPhotoFileUri(String photoFilename) {
+        File mediaStorageDir = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), APP_TAG);
+        //create storage directory if not in existence
+        if (!mediaStorageDir.exists() && !mediaStorageDir.mkdirs()){
+            Log.d(APP_TAG, "failed to create directory"); }
+        File file = new File(mediaStorageDir.getPath() + File.separator + photoFilename);
+        return file;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK){
+            Bundle extras = data.getExtras();
+            testImage = (ImageView) findViewById(R.id.imvTestGettingCamera);
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            testImage.setImageBitmap(imageBitmap);
+        }
+
+    }
+
 
 
 }

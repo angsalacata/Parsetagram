@@ -20,7 +20,10 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_home_timeline" />
+    <include
+        layout="@layout/content_home_timeline"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
@@ -56,9 +59,20 @@
         android:id="@+id/inputDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:layout_centerVertical="true"
+        android:layout_marginBottom="157dp"
         android:gravity="top"
         android:imeOptions="actionSend" />
+
+    <ImageView
+        android:id="@+id/imvTestGettingCamera"
+        android:layout_width="345dp"
+        android:layout_height="243dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/buttonRefresh"
+        android:layout_marginStart="-45dp"
+        android:layout_marginTop="100dp"
+        app:srcCompat="@android:color/black" />
 
 </RelativeLayout>

@@ -21,7 +21,6 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.angsala.parsetagram.models.Post;
-import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
@@ -30,7 +29,6 @@ import com.parse.SaveCallback;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
 public class HomeTimelineActivity extends AppCompatActivity {
 
@@ -90,6 +88,8 @@ public class HomeTimelineActivity extends AppCompatActivity {
         buttonCreate = (Button) findViewById(R.id.buttonCreate);
         buttonFeed = (Button) findViewById(R.id.buttonFeed);
 
+        getSupportActionBar().setTitle("Create a post");
+
        //test for persistence
         ParseUser test_current_user = ParseUser.getCurrentUser();
         if(test_current_user != null){
@@ -103,7 +103,7 @@ public class HomeTimelineActivity extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        loadTopPosts();
+                        Log.d(TAG, "clicked the fake af refresh button");
                     }
                 });
 
@@ -136,7 +136,7 @@ public class HomeTimelineActivity extends AppCompatActivity {
             }
         });
 
-        loadTopPosts();
+
 
         //button to take pictures, it is a floating action button
         FloatingActionButton camera = (FloatingActionButton) findViewById(R.id.fab);
@@ -166,35 +166,35 @@ public class HomeTimelineActivity extends AppCompatActivity {
                     }
                 });
     }
-
-    private void loadTopPosts() {
-        final Post.Query postsQuery = new Post.Query();
-        postsQuery.getTop().withUser();
-
-        postsQuery.findInBackground(
-                new FindCallback<Post>() {
-                    @Override
-                    public void done(List<Post> posts, ParseException e) {
-                        if (e == null) {
-                            for (int i = 0; i < posts.size(); i++) {
-                                Log.d(
-                                        TAG,
-                                        "Post number "
-                                                + i
-                                                + " description: "
-                                                + posts.get(i).getDescription()
-                                                + "\n username = "
-                                                + posts
-                                                .get(i)
-                                                .getUser()
-                                                .getUsername()); // user has been attached to the post
-                            }
-                        } else {
-                            e.printStackTrace();
-                        }
-                    }
-                });
-    }
+//
+//    private void loadTopPosts() {
+//                        final Post.Query postsQuery = new Post.Query();
+//                        postsQuery.getTop().withUser().addAscendingOrder("createdAt");
+//
+//                        postsQuery.findInBackground(
+//                                new FindCallback<Post>() {
+//                                    @Override
+//                                    public void done(List<Post> posts, ParseException e) {
+//                                        if (e == null) {
+//                                            for (int i = 0; i < posts.size(); i++) {
+//                                                Log.d(
+//                                                        TAG,
+//                                                        "Post number "
+//                                                                + i
+//                                                                + " description: "
+//                                                                + posts.get(i).getDescription()
+//                                                                + "\n username = "
+//                                                                + posts
+//                                                                .get(i)
+//                                                                .getUser()
+//                                                                .getUsername()); // user has been attached to the post
+//                                            }
+//                                        } else {
+//                                            e.printStackTrace();
+//                                        }
+//                                    }
+//                });
+//    }
 
 
 //TODO- how to pick a photo from the emulator

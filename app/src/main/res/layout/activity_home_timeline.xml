@@ -30,10 +30,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
         android:layout_gravity="bottom|end"
-        android:layout_marginBottom="91dp"
-        android:layout_marginStart="-63dp"
-        android:layout_toEndOf="@+id/buttonCreate"
+        android:layout_marginBottom="59dp"
+        android:layout_marginEnd="13dp"
         app:srcCompat="@android:drawable/ic_menu_camera" />
 
     <Button
@@ -42,8 +42,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:layout_marginBottom="25dp"
-        android:layout_marginStart="62dp"
+        android:layout_marginBottom="24dp"
+        android:layout_marginStart="20dp"
         android:text="Refresh" />
 
     <Button
@@ -67,20 +67,20 @@
 
     <ImageView
         android:id="@+id/imvTestGettingCamera"
-        android:layout_width="345dp"
+        android:layout_width="229dp"
         android:layout_height="243dp"
         android:layout_alignParentTop="true"
-        android:layout_alignStart="@+id/buttonRefresh"
-        android:layout_marginStart="-45dp"
-        android:layout_marginTop="100dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="97dp"
         app:srcCompat="@android:color/black" />
 
     <Button
         android:id="@+id/buttonFeed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/fab"
-        android:layout_centerHorizontal="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignTop="@+id/buttonRefresh"
+        android:layout_marginStart="124dp"
         android:text="Feed" />
 
 </RelativeLayout>

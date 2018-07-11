@@ -1,6 +1,7 @@
 package com.example.angsala.parsetagram;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
@@ -18,6 +19,7 @@ import java.io.File;
 import java.util.List;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
+    public static final String POST_DESCRIPTION = "postDescription";
     private List<Post> adapterPosts;
     Context context;
     File imageFile;
@@ -67,8 +69,27 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
         @Override
         public void onClick(View view) {
+            int viewPosition = getAdapterPosition();
+            if(viewPosition != RecyclerView.NO_POSITION){
+                Post post = adapterPosts.get(viewPosition);
+
+                Intent detailsIntent = new Intent(context, DetailsActivity.class);
+                detailsIntent.putExtra(POST_DESCRIPTION, post.getDescription());
+                context.startActivity(detailsIntent);
+            }
 
 
         }
     }
+
+    //clean all elements
+    public void clear(){
+        adapterPosts.clear();
+        notifyDataSetChanged();
+    }
+    public void addAll(List<Post> list){
+        adapterPosts.addAll(list);
+        notifyDataSetChanged();
+    }
+
 }

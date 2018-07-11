@@ -1,6 +1,7 @@
 package com.example.angsala.parsetagram;
 
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,6 +19,7 @@ public class FeedActivity extends AppCompatActivity {
     ArrayList<Post> mposts;
     PostAdapter postAdapter;
     RecyclerView rvViewPosts;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
 
     @Override
@@ -32,11 +34,13 @@ public class FeedActivity extends AppCompatActivity {
 
         loadTopPosts();
         rvViewPosts.setAdapter(postAdapter);
+
+        //swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
     }
 
     private void loadTopPosts() {
         final Post.Query postsQuery = new Post.Query();
-        postsQuery.getTop().withUser();
+        postsQuery.withUser();
 
         postsQuery.findInBackground(
                 new FindCallback<Post>() {
@@ -63,4 +67,12 @@ public class FeedActivity extends AppCompatActivity {
                     }
                 });
     }
+
+    public void fetchTimeline(int page){
+        postAdapter.clear();
+        loadTopPosts();
+        postAdapter.addAll(mposts);
+
+    }
+
 }

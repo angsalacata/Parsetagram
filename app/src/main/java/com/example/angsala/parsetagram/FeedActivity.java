@@ -35,7 +35,14 @@ public class FeedActivity extends AppCompatActivity {
         loadTopPosts();
         rvViewPosts.setAdapter(postAdapter);
 
-        //swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipeRefreshLayout.setRefreshing(false);
+                fetchTimeline(0); }
+        });
+
     }
 
     private void loadTopPosts() {

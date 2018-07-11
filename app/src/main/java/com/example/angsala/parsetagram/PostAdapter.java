@@ -15,11 +15,13 @@ import android.widget.TextView;
 import com.example.angsala.parsetagram.models.Post;
 import com.parse.ParseException;
 
+import org.parceler.Parcels;
+
 import java.io.File;
 import java.util.List;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
-    public static final String POST_DESCRIPTION = "postDescription";
+    public static final String POST_ID = "objectId";
     private List<Post> adapterPosts;
     Context context;
     File imageFile;
@@ -74,8 +76,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
                 Post post = adapterPosts.get(viewPosition);
 
                 Intent detailsIntent = new Intent(context, DetailsActivity.class);
-                detailsIntent.putExtra(POST_DESCRIPTION, post.getDescription());
+                detailsIntent.putExtra(Post.class.getSimpleName(), Parcels.wrap(post));
+              //  String objId = post.getObjectId();
+              //  detailsIntent.putExtra(POST_ID, objId);
                 context.startActivity(detailsIntent);
+
+
             }
 
 

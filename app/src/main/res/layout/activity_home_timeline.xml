@@ -75,4 +75,12 @@
         android:layout_marginTop="100dp"
         app:srcCompat="@android:color/black" />
 
+    <Button
+        android:id="@+id/buttonFeed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/fab"
+        android:layout_centerHorizontal="true"
+        android:text="Feed" />
+
 </RelativeLayout>

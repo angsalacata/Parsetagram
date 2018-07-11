@@ -37,6 +37,7 @@ public class HomeTimelineActivity extends AppCompatActivity {
     private EditText inputDescription;
     private Button buttonRefresh;
     private Button buttonCreate;
+    private Button buttonFeed;
     private ImageView testImage;
     public final static int PICK_PHOTO_CODE = 1046;
     static final int REQUEST_IMAGE_CAPTURE = 1;
@@ -57,6 +58,7 @@ public class HomeTimelineActivity extends AppCompatActivity {
         inputDescription = (EditText) findViewById(R.id.inputDescription);
         buttonRefresh = (Button) findViewById(R.id.buttonRefresh);
         buttonCreate = (Button) findViewById(R.id.buttonCreate);
+        buttonFeed = (Button) findViewById(R.id.buttonFeed);
 
        //test for persistence
         ParseUser test_current_user = ParseUser.getCurrentUser();
@@ -95,6 +97,14 @@ public class HomeTimelineActivity extends AppCompatActivity {
 
                     }
                 });
+
+        buttonFeed.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent feedIntent = new Intent(HomeTimelineActivity.this, FeedActivity.class);
+                startActivity(feedIntent);
+            }
+        });
 
         loadTopPosts();
 
@@ -208,9 +218,7 @@ public class HomeTimelineActivity extends AppCompatActivity {
             //this will still load the pic into an imageview
             Bitmap image = BitmapFactory.decodeFile(photofile.getAbsolutePath());
 
-        // Bundle extras = data.getExtras();
             testImage = (ImageView) findViewById(R.id.imvTestGettingCamera);
-    //   Bitmap imageBitmap = (Bitmap) extras.get("data");
             testImage.setImageBitmap(image);
 
         }

@@ -43,6 +43,7 @@
                 android:resource="@xml/fileprovider" />
         </provider>
 
+        <activity android:name=".FeedActivity"></activity>
     </application>
 
 </manifest>

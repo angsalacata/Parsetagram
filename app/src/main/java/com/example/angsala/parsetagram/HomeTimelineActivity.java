@@ -2,6 +2,7 @@ package com.example.angsala.parsetagram;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.angsala.parsetagram.models.Post;
 import com.parse.FindCallback;
@@ -56,6 +58,14 @@ public class HomeTimelineActivity extends AppCompatActivity {
         buttonRefresh = (Button) findViewById(R.id.buttonRefresh);
         buttonCreate = (Button) findViewById(R.id.buttonCreate);
 
+       //test for persistence
+        ParseUser test_current_user = ParseUser.getCurrentUser();
+        if(test_current_user != null){
+            Log.d(TAG, "Current user is good");}
+        else{
+            Intent logIn_intent = new Intent(HomeTimelineActivity.this, ParsetagramActivity.class);
+            startActivity(logIn_intent);
+            finish(); }
 
         buttonRefresh.setOnClickListener(
                 new View.OnClickListener() {
@@ -157,7 +167,7 @@ public class HomeTimelineActivity extends AppCompatActivity {
 
     private void dispatchTakePictureIntent(){
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(getPackageManager())!=null){
+      /* if (takePictureIntent.resolveActivity(getPackageManager())!=null){
             File photoFile = null;
             try{
                 photoFile = createImageFile();}
@@ -171,9 +181,13 @@ public class HomeTimelineActivity extends AppCompatActivity {
                 startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
             }
 
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-
-        }
+        }*/
+      photofile = getPhotoFileUri(photoFilename);
+      Uri fileProvider = FileProvider.getUriForFile(HomeTimelineActivity.this,"com.codepath.fileprovider", photofile);
+      takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,fileProvider);
+      if(takePictureIntent.resolveActivity(getPackageManager())!=null){
+          startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+      }
     }
 
     private File getPhotoFileUri(String photoFilename) {
@@ -192,10 +206,16 @@ public class HomeTimelineActivity extends AppCompatActivity {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK){
             Log.d(TAG, "successfully saved photo");
             //this will still load the pic into an imageview
-         Bundle extras = data.getExtras();
+            Bitmap image = BitmapFactory.decodeFile(photofile.getAbsolutePath());
+
+        // Bundle extras = data.getExtras();
             testImage = (ImageView) findViewById(R.id.imvTestGettingCamera);
-       Bitmap imageBitmap = (Bitmap) extras.get("data");
-         testImage.setImageBitmap(imageBitmap);
+    //   Bitmap imageBitmap = (Bitmap) extras.get("data");
+            testImage.setImageBitmap(image);
+
+        }
+        else{
+            Toast.makeText(this, "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
         }
 
     }

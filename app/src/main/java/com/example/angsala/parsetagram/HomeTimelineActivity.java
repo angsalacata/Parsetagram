@@ -12,6 +12,8 @@ import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -46,6 +48,34 @@ public class HomeTimelineActivity extends AppCompatActivity {
     public String photoFilename = "photo.jpg";
     File photofile;
     String mCurrentPhotoPath;
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.logout,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+    switch(item.getItemId()){
+        case R.id.logout:
+            ParseUser user = ParseUser.getCurrentUser();
+            user.logOut();
+            ParseUser currentUser = ParseUser.getCurrentUser();
+            System.out.println("CurrUser is "+ currentUser);
+            Log.d(TAG, "I clicked the icon");
+            Intent i = new Intent(HomeTimelineActivity.this, ParsetagramActivity.class);
+            startActivity(i);
+            finish();
+            return true;
+
+
+        default:
+            return super.onOptionsItemSelected(item);
+
+    }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

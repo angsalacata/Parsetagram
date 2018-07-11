@@ -26,6 +26,8 @@ public class ParsetagramActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_parsetagram);
 
+
+
     // inflate
     loginUsername = (EditText) findViewById(R.id.loginUsername);
     loginPassword = (EditText) findViewById(R.id.loginPassword);

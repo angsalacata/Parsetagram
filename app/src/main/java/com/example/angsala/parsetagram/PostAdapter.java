@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.angsala.parsetagram.models.Post;
 import com.parse.ParseException;
@@ -45,8 +46,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         }
        Bitmap image = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
         holder.imvImage.setImageBitmap(image);
-
-
+        holder.txtvDescription.setText(post.getDescription());
     }
 
     @Override
@@ -56,10 +56,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         ImageView imvImage;
+        TextView txtvDescription;
 
         public ViewHolder(View itemView) {
             super(itemView);
             imvImage = (ImageView) itemView.findViewById(R.id.imvPicture);
+            txtvDescription = (TextView) itemView.findViewById(R.id.txtvDescription);
             itemView.setOnClickListener(this);
         }
 

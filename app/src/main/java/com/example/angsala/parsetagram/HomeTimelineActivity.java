@@ -166,35 +166,6 @@ public class HomeTimelineActivity extends AppCompatActivity {
                     }
                 });
     }
-//
-//    private void loadTopPosts() {
-//                        final Post.Query postsQuery = new Post.Query();
-//                        postsQuery.getTop().withUser().addAscendingOrder("createdAt");
-//
-//                        postsQuery.findInBackground(
-//                                new FindCallback<Post>() {
-//                                    @Override
-//                                    public void done(List<Post> posts, ParseException e) {
-//                                        if (e == null) {
-//                                            for (int i = 0; i < posts.size(); i++) {
-//                                                Log.d(
-//                                                        TAG,
-//                                                        "Post number "
-//                                                                + i
-//                                                                + " description: "
-//                                                                + posts.get(i).getDescription()
-//                                                                + "\n username = "
-//                                                                + posts
-//                                                                .get(i)
-//                                                                .getUser()
-//                                                                .getUsername()); // user has been attached to the post
-//                                            }
-//                                        } else {
-//                                            e.printStackTrace();
-//                                        }
-//                                    }
-//                });
-//    }
 
 
 //TODO- how to pick a photo from the emulator

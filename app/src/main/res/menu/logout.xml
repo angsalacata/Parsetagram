@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/logout"
-        android:icon="@mipmap/ic_launcher_round"
+        android:icon="@mipmap/instagram_logo_foreground"
         android:title="Icon"
         app:showAsAction="always">
 

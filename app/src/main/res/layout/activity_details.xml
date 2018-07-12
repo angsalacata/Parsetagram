@@ -13,13 +13,35 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginTop="54dp"
+        android:scaleType="fitXY"
         app:srcCompat="@android:color/black" />
 
     <TextView
         android:id="@+id/txtvDetailsDescription"
         android:layout_width="match_parent"
-        android:layout_height="116dp"
+        android:layout_height="76dp"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/imvDetailsImage"
+        android:layout_marginTop="40dp"
+        android:gravity="center"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/txtvCreatedAt"
+        android:layout_width="258dp"
+        android:layout_height="37dp"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/imvDetailsImage"
+        android:gravity="center"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="143dp"
+        android:layout_height="54dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="0dp"
+        android:gravity="center"
         android:text="TextView" />
 </RelativeLayout>

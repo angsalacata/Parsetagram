@@ -23,7 +23,7 @@
                                           <PersistentState>
                                             <option name="values">
                                               <map>
-                                                <entry key="scalingPercent" value="56" />
+                                                <entry key="scalingPercent" value="39" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -34,7 +34,7 @@
                                   <option name="values">
                                     <map>
                                       <entry key="backgroundLayerName" value="ic_launcher_background" />
-                                      <entry key="foregroundImage" value="$USER_HOME$/Downloads/instagram_android_assets/icon.png" />
+                                      <entry key="foregroundImage" value="$USER_HOME$/Downloads/instagram_android_assets/drawable-xxhdpi/instagram_user_outline_24.png" />
                                       <entry key="outputName" value="instagram_logo" />
                                     </map>
                                   </option>

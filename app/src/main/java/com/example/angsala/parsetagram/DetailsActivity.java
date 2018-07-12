@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.format.DateUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -13,12 +14,15 @@ import com.parse.ParseException;
 import org.parceler.Parcels;
 
 import java.io.File;
+import java.util.Date;
 
 public class DetailsActivity extends AppCompatActivity {
     ImageView detailsImage;
     TextView detailsDescription;
+    TextView detailsCreatedAt;
     String textDescription;
     String textUsername;
+    String textCreatedAt;
     File imageFile;
 
     @Override
@@ -28,6 +32,8 @@ public class DetailsActivity extends AppCompatActivity {
 
         detailsImage = (ImageView) findViewById(R.id.imvDetailsImage);
         detailsDescription = (TextView) findViewById(R.id.txtvDetailsDescription);
+        detailsCreatedAt = (TextView) findViewById(R.id.txtvCreatedAt);
+
 
     final Post receivedPost = (Post) Parcels.unwrap(getIntent().getParcelableExtra(Post.class.getSimpleName()));
 
@@ -40,7 +46,11 @@ public class DetailsActivity extends AppCompatActivity {
         Bitmap image = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
         detailsImage.setImageBitmap(image);
         textDescription = receivedPost.getDescription();
+        textCreatedAt = receivedPost.getCreatedAt().toString();
+        Date createdAt = receivedPost.getCreatedAt();
+        String date = DateUtils.getRelativeTimeSpanString(createdAt.getTime(), System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS).toString();
         detailsDescription.setText(textDescription);
+        detailsCreatedAt.setText(date);
 
 
     }

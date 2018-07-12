@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.parse.LogInCallback;
 import com.parse.ParseException;
@@ -76,6 +77,7 @@ public class ParsetagramActivity extends AppCompatActivity {
 
             } else {
               Log.e(TAG, "Failed to login");
+              Toast.makeText(ParsetagramActivity.this, "Failed to login", Toast.LENGTH_LONG).show();
               e.printStackTrace();
             }
           }

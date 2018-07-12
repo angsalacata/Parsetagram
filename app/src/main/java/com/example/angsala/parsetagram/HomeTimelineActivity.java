@@ -96,13 +96,6 @@ public class HomeTimelineActivity extends AppCompatActivity {
       finish();
     }
 
-//   buttonRefresh.setOnClickListener(
-//       new View.OnClickListener() {
-//        @Override
-//          public void onClick(View view) {
-//           Log.d(TAG, "clicked the fake af refresh button");
-//         }
-//       });
 
     buttonCreate.setOnClickListener(
         new View.OnClickListener() {
@@ -157,6 +150,10 @@ public class HomeTimelineActivity extends AppCompatActivity {
           public void done(ParseException e) {
             if (e == null) {
               Log.d(TAG, "Successfully posted new post");
+                inputDescription.setText(null);
+                testImage.setImageResource(R.color.colorPrimaryDark);
+                //TODO-this still doesn't show
+                Toast.makeText(getApplicationContext(), "Posted!", Toast.LENGTH_LONG);
             } else {
               e.printStackTrace();
             }

@@ -19,11 +19,11 @@
     <TextView
         android:id="@+id/txtvDetailsDescription"
         android:layout_width="match_parent"
-        android:layout_height="76dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/imvDetailsImage"
-        android:layout_marginTop="40dp"
-        android:gravity="center"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
         android:text="TextView" />
 
     <TextView
@@ -31,7 +31,8 @@
         android:layout_width="218dp"
         android:layout_height="37dp"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/imvDetailsImage"
+        android:layout_below="@+id/txtvDetailsDescription"
+        android:layout_marginLeft="5dp"
         android:gravity="left|center"
         android:text="TextView" />
 
@@ -41,7 +42,7 @@
         android:layout_height="54dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="0dp"
+        android:layout_marginLeft="10dp"
         android:gravity="left|center_vertical"
         android:text="TextView" />
 </RelativeLayout>

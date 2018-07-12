@@ -30,7 +30,7 @@ public class FeedActivity extends AppCompatActivity {
         postAdapter = new PostAdapter(mposts);
         rvViewPosts = (RecyclerView) findViewById(R.id.rvPosts);
         rvViewPosts.setLayoutManager(new LinearLayoutManager(this));
-
+        getSupportActionBar().setTitle("(F)instagram");
 
         loadTopPosts();
         rvViewPosts.setAdapter(postAdapter);

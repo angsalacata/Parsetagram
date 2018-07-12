@@ -32,13 +32,11 @@ import java.io.File;
 public class HomeTimelineActivity extends AppCompatActivity {
 
   String TAG = "HomeActivity";
-  private static final String imagePath = "/storage/emulated/0/DCIM/Camera/IMG_20180709_175243.jpg";
   private EditText inputDescription;
  // private Button buttonRefresh;
   private Button buttonCreate;
   private Button buttonFeed;
   private ImageView testImage;
-  public static final int PICK_PHOTO_CODE = 1046;
   static final int REQUEST_IMAGE_CAPTURE = 1;
   // this is from the codepath, capture intent article
   public final String APP_TAG = "MyParsetagram";

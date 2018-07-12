@@ -34,7 +34,8 @@
         android:ems="10"
         android:hint="Username"
         android:imeOptions="actionSend"
-        android:textColorHint="#ffffff" />
+        android:textColorHint="#ffffff"
+        android:textColor="#ffffff"/>
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
@@ -43,6 +44,7 @@
         android:layout_alignParentStart="true"
         android:layout_below="@id/loginUsername"
         android:textColorHint="#ffffff"
+        android:textColor="#ffffff"
         android:layout_marginBottom="203dp"
         app:passwordToggleEnabled="true">
 
@@ -58,6 +60,7 @@
             android:background="#33cccccc"
             android:hint="Password"
             android:textColorHint="#ffffff"
+            android:textColor="#ffffff"
             android:imeOptions="actionSend"
             android:inputType="textPassword"
              />

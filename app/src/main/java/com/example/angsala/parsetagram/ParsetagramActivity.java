@@ -27,36 +27,40 @@ public class ParsetagramActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_parsetagram);
 
+    ParseUser currentUser = ParseUser.getCurrentUser();
+    if (currentUser != null){
+        Intent i = new Intent(ParsetagramActivity.this, HomeTimelineActivity.class);
+        startActivity(i);
+    } else {
 
+      // inflate
+      loginUsername = (EditText) findViewById(R.id.loginUsername);
+      loginPassword = (EditText) findViewById(R.id.loginPassword);
+      loginButton = (Button) findViewById(R.id.loginButton);
+      createAccount = (TextView) findViewById(R.id.txtvCreateAccount);
 
-    // inflate
-    loginUsername = (EditText) findViewById(R.id.loginUsername);
-    loginPassword = (EditText) findViewById(R.id.loginPassword);
-    loginButton = (Button) findViewById(R.id.loginButton);
-    createAccount = (TextView) findViewById(R.id.txtvCreateAccount);
+      getSupportActionBar().hide();
 
-    getSupportActionBar().hide();
+      loginButton.setOnClickListener(
+          new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+              final String passedusername = loginUsername.getText().toString();
+              final String passedpassword = loginPassword.getText().toString();
+              login_helper(passedusername, passedpassword);
+            }
+          });
 
-
-    loginButton.setOnClickListener(
-        new View.OnClickListener() {
-          @Override
-          public void onClick(View view) {
-            final String passedusername = loginUsername.getText().toString();
-            final String passedpassword = loginPassword.getText().toString();
-            login_helper(passedusername, passedpassword);
-          }
-        });
-
-    createAccount.setOnClickListener(
-        new View.OnClickListener() {
-          @Override
-          public void onClick(View view) {
-            Intent intent = new Intent(ParsetagramActivity.this, CreateAccountActivity.class);
-            startActivity(intent);
-            finish();
-          }
-        });
+      createAccount.setOnClickListener(
+          new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+              Intent intent = new Intent(ParsetagramActivity.this, CreateAccountActivity.class);
+              startActivity(intent);
+              finish();
+            }
+          });
+    }
   }
 
   // helper function to login in from click listener

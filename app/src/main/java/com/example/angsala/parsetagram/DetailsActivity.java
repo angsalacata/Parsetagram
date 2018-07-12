@@ -54,7 +54,7 @@ public class DetailsActivity extends AppCompatActivity {
         textUsername = postuser.getUsername();
         Date createdAt = receivedPost.getCreatedAt();
         String date = DateUtils.getRelativeTimeSpanString(createdAt.getTime(), System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS).toString();
-        detailsDescription.setText(textUsername + textDescription);
+        detailsDescription.setText(textUsername + " " + textDescription);
         detailsCreatedAt.setText(date);
         detailsUsername.setText(textUsername);
 

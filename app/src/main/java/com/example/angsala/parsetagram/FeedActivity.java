@@ -22,6 +22,7 @@ public class FeedActivity extends AppCompatActivity {
     private SwipeRefreshLayout swipeRefreshLayout;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

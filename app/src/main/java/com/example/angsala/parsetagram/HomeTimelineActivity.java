@@ -28,215 +28,178 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.io.File;
-import java.io.IOException;
 
 public class HomeTimelineActivity extends AppCompatActivity {
 
-    String TAG = "HomeActivity";
-    private static final String imagePath = "/storage/emulated/0/DCIM/Camera/IMG_20180709_175243.jpg";
-    private EditText inputDescription;
-    private Button buttonRefresh;
-    private Button buttonCreate;
-    private Button buttonFeed;
-    private ImageView testImage;
-    public final static int PICK_PHOTO_CODE = 1046;
-    static final int REQUEST_IMAGE_CAPTURE = 1;
-    //this is from the codepath, capture intent article
-    public final String APP_TAG = "MyParsetagram";
-    public String photoFilename = "photo.jpg";
-    File photofile;
-    String mCurrentPhotoPath;
+  String TAG = "HomeActivity";
+  private static final String imagePath = "/storage/emulated/0/DCIM/Camera/IMG_20180709_175243.jpg";
+  private EditText inputDescription;
+ // private Button buttonRefresh;
+  private Button buttonCreate;
+  private Button buttonFeed;
+  private ImageView testImage;
+  public static final int PICK_PHOTO_CODE = 1046;
+  static final int REQUEST_IMAGE_CAPTURE = 1;
+  // this is from the codepath, capture intent article
+  public final String APP_TAG = "MyParsetagram";
+  public String photoFilename = "photo.jpg";
+  File photofile;
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        getMenuInflater().inflate(R.menu.logout,menu);
+  @Override
+  public boolean onCreateOptionsMenu(Menu menu) {
+    getMenuInflater().inflate(R.menu.logout, menu);
+    return true;
+  }
+
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+    switch (item.getItemId()) {
+      case R.id.logout:
+        ParseUser user = ParseUser.getCurrentUser();
+        user.logOut();
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        System.out.println("CurrUser is " + currentUser);
+        Log.d(TAG, "I clicked the icon");
+        Intent i = new Intent(HomeTimelineActivity.this, ParsetagramActivity.class);
+        startActivity(i);
+        finish();
         return true;
+
+      default:
+        return super.onOptionsItemSelected(item);
+    }
+  }
+
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_home_timeline);
+    Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+    setSupportActionBar(toolbar);
+
+    ParseObject.registerSubclass(Post.class);
+
+    inputDescription = (EditText) findViewById(R.id.inputDescription);
+   // buttonRefresh = (Button) findViewById(R.id.buttonRefresh);
+    buttonCreate = (Button) findViewById(R.id.buttonCreate);
+    buttonFeed = (Button) findViewById(R.id.buttonFeed);
+
+    getSupportActionBar().setTitle("Create a post");
+
+    // test for persistence
+    ParseUser test_current_user = ParseUser.getCurrentUser();
+    if (test_current_user != null) {
+      Log.d(TAG, "Current user is good");
+    } else {
+      Intent logIn_intent = new Intent(HomeTimelineActivity.this, ParsetagramActivity.class);
+      startActivity(logIn_intent);
+      finish();
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item){
-    switch(item.getItemId()){
-        case R.id.logout:
-            ParseUser user = ParseUser.getCurrentUser();
-            user.logOut();
-            ParseUser currentUser = ParseUser.getCurrentUser();
-            System.out.println("CurrUser is "+ currentUser);
-            Log.d(TAG, "I clicked the icon");
-            Intent i = new Intent(HomeTimelineActivity.this, ParsetagramActivity.class);
-            startActivity(i);
-            finish();
-            return true;
+//   buttonRefresh.setOnClickListener(
+//       new View.OnClickListener() {
+//        @Override
+//          public void onClick(View view) {
+//           Log.d(TAG, "clicked the fake af refresh button");
+//         }
+//       });
 
+    buttonCreate.setOnClickListener(
+        new View.OnClickListener() {
+          @Override
+          public void onClick(View view) {
+            // instance objects for createPosts
+            final String description = inputDescription.getText().toString();
+            final ParseUser currentUser = ParseUser.getCurrentUser();
 
-        default:
-            return super.onOptionsItemSelected(item);
-
-    }
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home_timeline);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        ParseObject.registerSubclass(Post.class);
-
-        inputDescription = (EditText) findViewById(R.id.inputDescription);
-        buttonRefresh = (Button) findViewById(R.id.buttonRefresh);
-        buttonCreate = (Button) findViewById(R.id.buttonCreate);
-        buttonFeed = (Button) findViewById(R.id.buttonFeed);
-
-        getSupportActionBar().setTitle("Create a post");
-
-       //test for persistence
-        ParseUser test_current_user = ParseUser.getCurrentUser();
-        if(test_current_user != null){
-            Log.d(TAG, "Current user is good");}
-        else{
-            Intent logIn_intent = new Intent(HomeTimelineActivity.this, ParsetagramActivity.class);
-            startActivity(logIn_intent);
-            finish(); }
-
-        buttonRefresh.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Log.d(TAG, "clicked the fake af refresh button");
-                    }
-                });
-
-        buttonCreate.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        // instance objects for createPosts
-                        final String description = inputDescription.getText().toString();
-                        final ParseUser currentUser = ParseUser.getCurrentUser();
-
-                        final File file = getPhotoFileUri(photoFilename);
-                        final ParseFile picture = new ParseFile(file);
-                        //this ParseFile has to be saved
-                        picture.saveInBackground(new SaveCallback() {
-                            @Override
-                            public void done(ParseException e) {
-                                createPosts(description, picture, currentUser);
-                            }
-                        });
-
-                    }
-                });
-
-        buttonFeed.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent feedIntent = new Intent(HomeTimelineActivity.this, FeedActivity.class);
-                startActivity(feedIntent);
-            }
-        });
-
-
-
-        //button to take pictures, it is a floating action button
-        FloatingActionButton camera = (FloatingActionButton) findViewById(R.id.fab);
-        camera.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dispatchTakePictureIntent();
-                }
-        });
-    }
-
-    private void createPosts(String description, ParseFile imageFile, ParseUser user) {
-        Post newPost = new Post();
-        newPost.setDescription(description);
-        newPost.setImage(imageFile);
-        newPost.setUser(user);
-
-        newPost.saveInBackground(
+            final File file = getPhotoFileUri(photoFilename);
+            final ParseFile picture = new ParseFile(file);
+            // this ParseFile has to be saved
+            picture.saveInBackground(
                 new SaveCallback() {
-                    @Override
-                    public void done(ParseException e) {
-                        if (e == null) {
-                            Log.d(TAG, "Successfully posted new post");
-                        } else {
-                            e.printStackTrace();
-                        }
-                    }
+                  @Override
+                  public void done(ParseException e) {
+                    createPosts(description, picture, currentUser);
+                  }
                 });
-    }
+          }
+        });
 
+    buttonFeed.setOnClickListener(
+        new View.OnClickListener() {
+          @Override
+          public void onClick(View view) {
+            Intent feedIntent = new Intent(HomeTimelineActivity.this, FeedActivity.class);
+            startActivity(feedIntent);
+          }
+        });
 
-//TODO- how to pick a photo from the emulator
- /*   public void onPickPhoto(View view){
-        //Create intent for picking a photo from the gallery
-        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+    // button to take pictures, it is a floating action button
+    FloatingActionButton camera = (FloatingActionButton) findViewById(R.id.fab);
+    camera.setOnClickListener(
+        new View.OnClickListener() {
+          @Override
+          public void onClick(View view) {
+            dispatchTakePictureIntent();
+          }
+        });
+  }
 
-    }*/
+  private void createPosts(String description, ParseFile imageFile, ParseUser user) {
+    Post newPost = new Post();
+    newPost.setDescription(description);
+    newPost.setImage(imageFile);
+    newPost.setUser(user);
 
-
-    private void dispatchTakePictureIntent(){
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-      /* if (takePictureIntent.resolveActivity(getPackageManager())!=null){
-            File photoFile = null;
-            try{
-                photoFile = createImageFile();}
-            catch(IOException e){
-                e.printStackTrace();
+    newPost.saveInBackground(
+        new SaveCallback() {
+          @Override
+          public void done(ParseException e) {
+            if (e == null) {
+              Log.d(TAG, "Successfully posted new post");
+            } else {
+              e.printStackTrace();
             }
-            if(photoFile != null){
-                mCurrentPhotoPath = photoFile.getAbsolutePath();
-                Uri photoURI = FileProvider.getUriForFile(HomeTimelineActivity.this,"com.codepath.fileprovider", photoFile);
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-            }
+          }
+        });
+  }
 
-        }*/
-      photofile = getPhotoFileUri(photoFilename);
-      Uri fileProvider = FileProvider.getUriForFile(HomeTimelineActivity.this,"com.codepath.fileprovider", photofile);
-      takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,fileProvider);
-      if(takePictureIntent.resolveActivity(getPackageManager())!=null){
-          startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-      }
+  private void dispatchTakePictureIntent() {
+    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+    photofile = getPhotoFileUri(photoFilename);
+    Uri fileProvider =
+        FileProvider.getUriForFile(
+            HomeTimelineActivity.this, "com.codepath.fileprovider", photofile);
+    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider);
+    if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+      startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
     }
+  }
 
-    private File getPhotoFileUri(String photoFilename) {
-        File mediaStorageDir = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), APP_TAG);
-        //create storage directory if not in existence
-        if (!mediaStorageDir.exists() && !mediaStorageDir.mkdirs()){
-            Log.d(APP_TAG, "failed to create directory"); }
-        File file = new File(mediaStorageDir.getPath() + File.separator + photoFilename);
-        return file;
+  private File getPhotoFileUri(String photoFilename) {
+    File mediaStorageDir = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), APP_TAG);
+    // create storage directory if not in existence
+    if (!mediaStorageDir.exists() && !mediaStorageDir.mkdirs()) {
+      Log.d(APP_TAG, "failed to create directory");
     }
+    File file = new File(mediaStorageDir.getPath() + File.separator + photoFilename);
+    return file;
+  }
 
-    //use this to trigger that the file was loaded
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data){
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK){
-            Log.d(TAG, "successfully saved photo");
-            //this will still load the pic into an imageview
-            Bitmap image = BitmapFactory.decodeFile(photofile.getAbsolutePath());
+  // use this to trigger that the file was loaded
+  @Override
+  protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    super.onActivityResult(requestCode, resultCode, data);
+    if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+      Log.d(TAG, "successfully saved photo");
+      // this will still load the pic into an imageview
+      Bitmap image = BitmapFactory.decodeFile(photofile.getAbsolutePath());
 
-            testImage = (ImageView) findViewById(R.id.imvTestGettingCamera);
-            testImage.setImageBitmap(image);
+      testImage = (ImageView) findViewById(R.id.imvTestGettingCamera);
+      testImage.setImageBitmap(image);
 
-        }
-        else{
-            Toast.makeText(this, "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
-        }
-
+    } else {
+      Toast.makeText(this, "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
     }
-
-    private File createImageFile() throws IOException{
-        String timeStamp = "7/10";
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(timeStamp, imageFileName, storageDir);
-        return image;
-    }
-
-
-
+  }
 }

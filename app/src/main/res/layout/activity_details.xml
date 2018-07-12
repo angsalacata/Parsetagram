@@ -28,20 +28,20 @@
 
     <TextView
         android:id="@+id/txtvCreatedAt"
-        android:layout_width="258dp"
+        android:layout_width="218dp"
         android:layout_height="37dp"
-        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true"
         android:layout_below="@+id/imvDetailsImage"
-        android:gravity="center"
+        android:gravity="left|center"
         android:text="TextView" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/txtvUsername"
         android:layout_width="143dp"
         android:layout_height="54dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginTop="0dp"
-        android:gravity="center"
+        android:gravity="left|center_vertical"
         android:text="TextView" />
 </RelativeLayout>

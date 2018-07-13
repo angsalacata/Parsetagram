@@ -15,72 +15,71 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FeedActivity extends AppCompatActivity {
-    public final String TAG = "FeedActivityTAG";
-    ArrayList<Post> mposts;
-    PostAdapter postAdapter;
-    RecyclerView rvViewPosts;
-    private SwipeRefreshLayout swipeRefreshLayout;
+  public final String TAG = "FeedActivityTAG";
+  ArrayList<Post> mposts;
+  PostAdapter postAdapter;
+  RecyclerView rvViewPosts;
+  private SwipeRefreshLayout swipeRefreshLayout;
 
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_feed);
+    mposts = new ArrayList<>();
+    postAdapter = new PostAdapter(mposts);
+    rvViewPosts = (RecyclerView) findViewById(R.id.rvPosts);
+    rvViewPosts.setLayoutManager(new LinearLayoutManager(this));
 
+    loadTopPosts();
+    rvViewPosts.setAdapter(postAdapter);
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_feed);
-        mposts = new ArrayList<>();
-        postAdapter = new PostAdapter(mposts);
-        rvViewPosts = (RecyclerView) findViewById(R.id.rvPosts);
-        rvViewPosts.setLayoutManager(new LinearLayoutManager(this));
-        getSupportActionBar().setTitle("(F)instagram");
-
-        loadTopPosts();
-        rvViewPosts.setAdapter(postAdapter);
-
-        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                swipeRefreshLayout.setRefreshing(false);
-                fetchTimeline(0); }
+    swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
+    swipeRefreshLayout.setOnRefreshListener(
+        new SwipeRefreshLayout.OnRefreshListener() {
+          @Override
+          public void onRefresh() {
+            swipeRefreshLayout.setRefreshing(false);
+            fetchTimeline(0);
+          }
         });
+  }
 
-    }
+  private void loadTopPosts() {
+    final Post.Query postsQuery = new Post.Query();
+    postsQuery.withUser().orderByAscending("createdAt");
 
-    private void loadTopPosts() {
-        final Post.Query postsQuery = new Post.Query();
-        postsQuery.withUser();
+    postsQuery.findInBackground(
+        new FindCallback<Post>() {
+          @Override
+          public void done(List<Post> posts, ParseException e) {
+            if (e == null) {
+              for (int i = posts.size() - 1; i >= 0; i--) {
+                Log.d(
+                    TAG,
+                    "Post number "
+                        + i
+                        + " description: "
+                        + posts.get(i).getDescription()
+                        + "\n username = "
+                        + posts
+                            .get(i)
+                            .getUser()
+                            .getUsername()); // user has been attached to the post)
 
-        postsQuery.findInBackground(
-                new FindCallback<Post>() {
-                    @Override
-                    public void done(List<Post> posts, ParseException e) {
-                        if (e == null) {
-                            for (int i = posts.size() - 1; i >= 0; i--) {
-                                Log.d(TAG, "Post number "
-                                                + i
-                                                + " description: "
-                                                + posts.get(i).getDescription()
-                                                + "\n username = "
-                                                + posts
-                                                .get(i)
-                                                .getUser()
-                                                .getUsername()); // user has been attached to the post)
+                mposts.add(posts.get(i));
+                postAdapter.notifyItemInserted(mposts.size() - 1);
+              }
 
-                                mposts.add(posts.get(i));
-                                postAdapter.notifyItemInserted(mposts.size() - 1); }
+            } else {
+              e.printStackTrace();
+            }
+          }
+        });
+  }
 
-                        } else {
-                            e.printStackTrace();
-                        }
-                    }
-                });
-    }
-
-    public void fetchTimeline(int page){
-        postAdapter.clear();
-        loadTopPosts();
-        postAdapter.addAll(mposts);
-
-    }
-
+  public void fetchTimeline(int page) {
+    postAdapter.clear();
+    loadTopPosts();
+    postAdapter.addAll(mposts);
+  }
 }

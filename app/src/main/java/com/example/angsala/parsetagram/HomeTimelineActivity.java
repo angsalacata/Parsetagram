@@ -152,7 +152,7 @@ public class HomeTimelineActivity extends AppCompatActivity {
                 inputDescription.setText(null);
                 testImage.setImageResource(R.color.colorPrimaryDark);
                 //TODO-this still doesn't show
-                Toast.makeText(getApplicationContext(), "Posted!", Toast.LENGTH_LONG);
+                //Toast.makeText(getApplicationContext(), "Posted!", Toast.LENGTH_LONG);
             } else {
               e.printStackTrace();
             }

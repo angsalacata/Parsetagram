@@ -28,9 +28,9 @@ public class ParsetagramActivity extends AppCompatActivity {
     setContentView(R.layout.activity_parsetagram);
 
     ParseUser currentUser = ParseUser.getCurrentUser();
-    if (currentUser != null){
-        Intent i = new Intent(ParsetagramActivity.this, HomeTimelineActivity.class);
-        startActivity(i);
+    if (currentUser != null) {
+      Intent i = new Intent(ParsetagramActivity.this, HomeTimelineActivity.class);
+      startActivity(i);
     } else {
 
       // inflate

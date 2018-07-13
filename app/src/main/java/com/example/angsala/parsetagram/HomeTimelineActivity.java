@@ -33,7 +33,7 @@ public class HomeTimelineActivity extends AppCompatActivity {
 
   String TAG = "HomeActivity";
   private EditText inputDescription;
- // private Button buttonRefresh;
+  // private Button buttonRefresh;
   private Button buttonCreate;
   private Button buttonFeed;
   private ImageView testImage;
@@ -68,7 +68,6 @@ public class HomeTimelineActivity extends AppCompatActivity {
     }
   }
 
-
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -79,7 +78,7 @@ public class HomeTimelineActivity extends AppCompatActivity {
     ParseObject.registerSubclass(Post.class);
 
     inputDescription = (EditText) findViewById(R.id.inputDescription);
-   // buttonRefresh = (Button) findViewById(R.id.buttonRefresh);
+    // buttonRefresh = (Button) findViewById(R.id.buttonRefresh);
     buttonCreate = (Button) findViewById(R.id.buttonCreate);
     buttonFeed = (Button) findViewById(R.id.buttonFeed);
 
@@ -94,7 +93,6 @@ public class HomeTimelineActivity extends AppCompatActivity {
       startActivity(logIn_intent);
       finish();
     }
-
 
     buttonCreate.setOnClickListener(
         new View.OnClickListener() {
@@ -149,10 +147,10 @@ public class HomeTimelineActivity extends AppCompatActivity {
           public void done(ParseException e) {
             if (e == null) {
               Log.d(TAG, "Successfully posted new post");
-                inputDescription.setText(null);
-                testImage.setImageResource(R.color.colorPrimaryDark);
-                //TODO-this still doesn't show
-                //Toast.makeText(getApplicationContext(), "Posted!", Toast.LENGTH_LONG);
+              inputDescription.setText(null);
+              testImage.setImageResource(R.color.colorPrimaryDark);
+              // TODO-this still doesn't show
+              // Toast.makeText(getApplicationContext(), "Posted!", Toast.LENGTH_LONG);
             } else {
               e.printStackTrace();
             }

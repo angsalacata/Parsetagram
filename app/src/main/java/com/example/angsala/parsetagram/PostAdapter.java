@@ -48,7 +48,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     ParseUser user = post.getUser();
     String username = user.getUsername();
     Date createdAt = post.getCreatedAt();
-    String timestamp = DateUtils.getRelativeTimeSpanString(createdAt.getTime(), System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS).toString();
+    String timestamp =
+        DateUtils.getRelativeTimeSpanString(
+                createdAt.getTime(), System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS)
+            .toString();
     try {
       imageFile = post.getImage().getFile();
     } catch (ParseException e) {
@@ -56,7 +59,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     }
     Bitmap image = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
     holder.imvImage.setImageBitmap(image);
-    holder.txtvUsername.setText("Created by "+ username);
+    holder.txtvUsername.setText("Created by " + username);
     holder.txtvTimestamp.setText(timestamp);
   }
 

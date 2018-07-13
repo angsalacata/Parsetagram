@@ -18,46 +18,47 @@ import java.io.File;
 import java.util.Date;
 
 public class DetailsActivity extends AppCompatActivity {
-    ImageView detailsImage;
-    TextView detailsDescription;
-    TextView detailsCreatedAt;
-    TextView detailsUsername;
-    String textDescription;
-    String textUsername;
-    String textCreatedAt;
-    File imageFile;
+  ImageView detailsImage;
+  TextView detailsDescription;
+  TextView detailsCreatedAt;
+  TextView detailsUsername;
+  String textDescription;
+  String textUsername;
+  String textCreatedAt;
+  File imageFile;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_details);
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_details);
 
-        detailsImage = (ImageView) findViewById(R.id.imvDetailsImage);
-        detailsDescription = (TextView) findViewById(R.id.txtvDetailsDescription);
-        detailsCreatedAt = (TextView) findViewById(R.id.txtvCreatedAt);
-        detailsUsername = (TextView) findViewById(R.id.txtvUsername);
+    detailsImage = (ImageView) findViewById(R.id.imvDetailsImage);
+    detailsDescription = (TextView) findViewById(R.id.txtvDetailsDescription);
+    detailsCreatedAt = (TextView) findViewById(R.id.txtvCreatedAt);
+    detailsUsername = (TextView) findViewById(R.id.txtvUsername);
 
+    final Post receivedPost =
+        (Post) Parcels.unwrap(getIntent().getParcelableExtra(Post.class.getSimpleName()));
 
-    final Post receivedPost = (Post) Parcels.unwrap(getIntent().getParcelableExtra(Post.class.getSimpleName()));
-
-        try {
-            imageFile = receivedPost.getImage().getFile();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        Bitmap image = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
-        detailsImage.setImageBitmap(image);
-        textDescription = receivedPost.getDescription();
-        textCreatedAt = receivedPost.getCreatedAt().toString();
-        ParseUser postuser = receivedPost.getUser();
-        textUsername = postuser.getUsername();
-        Date createdAt = receivedPost.getCreatedAt();
-        String date = DateUtils.getRelativeTimeSpanString(createdAt.getTime(), System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS).toString();
-        detailsDescription.setText(textUsername + " " + textDescription);
-        detailsCreatedAt.setText(date);
-        detailsUsername.setText(textUsername);
-
-
+    try {
+      imageFile = receivedPost.getImage().getFile();
+    } catch (ParseException e) {
+      e.printStackTrace();
     }
+
+    Bitmap image = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
+    detailsImage.setImageBitmap(image);
+    textDescription = receivedPost.getDescription();
+    textCreatedAt = receivedPost.getCreatedAt().toString();
+    ParseUser postuser = receivedPost.getUser();
+    textUsername = postuser.getUsername();
+    Date createdAt = receivedPost.getCreatedAt();
+    String date =
+        DateUtils.getRelativeTimeSpanString(
+                createdAt.getTime(), System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS)
+            .toString();
+    detailsDescription.setText(textUsername + " " + textDescription);
+    detailsCreatedAt.setText(date);
+    detailsUsername.setText(textUsername);
+  }
 }
